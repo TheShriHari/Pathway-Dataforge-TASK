@@ -1,0 +1,41 @@
+{
+  "provenance": "EXTERNAL_REPORTED",
+  "disclaimer": "These numbers are reported by Pathway in arXiv:2608.09888 and evaluated on the ARC-AGI-1 benchmark. They are not independently reproduced by this toy maze experiment.",
+  "source_paper": {
+    "title": "BDH-CQ: In-Context Learning with Recurrent Latent Reasoning",
+    "authors": "Kosowski et al.",
+    "arxiv_id": "arXiv:2608.09888",
+    "table": "Table 5",
+    "table_caption": "Table 5: Comparing pass@2 and cost across reasoning efforts LOW, MEDIUM, HIGH"
+  },
+  "foundational_paper": {
+    "title": "The Dragon Hatchling: The Missing Link Between the Transformer and Models of the Brain",
+    "authors": "Kosowski et al.",
+    "arxiv_id": "arXiv:2509.26507"
+  },
+  "benchmark": "ARC-AGI-1 Public Evaluation Split (400 tasks)",
+  "metric": "pass@2",
+  "effort_levels": [
+    {
+      "level": "LOW",
+      "pass_at_2": 21.0,
+      "cost_reduction_pct": 22.0,
+      "relative_cost_pct": 78.0,
+      "description": "Reduced latent reasoning compute: lowest computational cost (-22%), baseline pass@2."
+    },
+    {
+      "level": "MEDIUM",
+      "pass_at_2": 27.0,
+      "cost_reduction_pct": 11.0,
+      "relative_cost_pct": 89.0,
+      "description": "Intermediate latent reasoning: +6.0% pass@2 gain over LOW for +14% compute cost."
+    },
+    {
+      "level": "HIGH",
+      "pass_at_2": 29.5,
+      "cost_reduction_pct": 0.0,
+      "relative_cost_pct": 100.0,
+      "description": "Full latent reasoning: +2.5% pass@2 gain over MEDIUM with diminishing returns (+12.3% compute cost)."
+    }
+  ]
+}

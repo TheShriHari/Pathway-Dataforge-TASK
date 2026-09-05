@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inference-Time Scaling Explainer | Pathway x DataForge Hackathon</title>
+  <meta name="description" content="An interactive explainer proving that recurrent latent computation steps improve reasoning accuracy without producing extra natural-language tokens.">
+  
+  <!-- Preconnect Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Top Bar -->
+    <header class="site-header">
+      <div class="top-bar">
+        <div class="brand-badge">
+          <span>&#9670;</span> Pathway x DataForge Hackathon Submission
+        </div>
+        <div>
+          <span class="badge-provenance badge-real">&#9679; Precomputed Real Data</span>
+          <span class="badge-provenance badge-external">&#9679; External Benchmark</span>
+        </div>
+      </div>
+
+      <!-- Central Claim Hero Card (FR5) -->
+      <div class="claim-card" id="central-claim">
+        <div class="claim-title">
+          <span>&#9733;</span> Central Thesis &amp; Claim
+        </div>
+        <blockquote class="claim-quote">
+          &ldquo;Increasing the number of recurrent latent computation steps at inference time can improve reasoning accuracy without producing any additional natural-language reasoning tokens &mdash; but gains diminish and each extra step costs more compute/time.&rdquo;
+        </blockquote>
+        
+        <div class="claim-meta-grid">
+          <div class="claim-meta-item">
+            <strong>Target Audience</strong>
+            <span>ML Engineers, Researchers, &amp; Hackathon Judges</span>
+          </div>
+          <div class="claim-meta-item">
+            <strong>Prerequisites</strong>
+            <span>Basic neural net forward pass &amp; pathfinding intuition</span>
+          </div>
+          <div class="claim-meta-item">
+            <strong>Explicit Limitation</strong>
+            <span>Synthetic 2D grid toy model; foundation models operate in higher latent manifolds</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      
+      <!-- Module 1: Interactive Maze Reasoning Explorer (FR1 & FR2) -->
+      <section class="section-block" id="interactive-explorer" aria-labelledby="heading-explorer">
+        <div class="section-header">
+          <div class="section-title-wrap">
+            <h2 id="heading-explorer">
+              <span>01</span> Interactive Latent Reasoning Explorer
+            </h2>
+            <p class="section-subtitle">
+              Drag the reasoning effort slider to observe how sequential latent loops refine the model&rsquo;s internal path solution.
+            </p>
+          </div>
+          <span class="badge-provenance badge-real">&#9679; PRECOMPUTED REAL TRACES</span>
+        </div>
+
+        <!-- Puzzle Selection Tabs -->
+        <div class="puzzle-tabs" id="puzzle-tabs" role="tablist" aria-label="Maze Puzzle Selector">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <!-- Reasoning Effort Slider Card -->
+        <div class="slider-control-card">
+          <div class="slider-header">
+            <div>
+              <h3 class="slider-title" id="slider-label">Reasoning Effort (Recurrent Latent Loops K)</h3>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">
+                Keyboard navigation: Use &larr; and &rarr; arrow keys or buttons to step
+              </p>
+            </div>
+            <div class="effort-display">
+              <span class="effort-number" id="effort-val-display" aria-live="polite">1</span>
+              <span class="effort-unit">Loops (K)</span>
+            </div>
+          </div>
+
+          <div class="range-slider-wrap">
+            <input 
+              type="range" 
+              id="effort-slider" 
+              class="effort-slider" 
+              min="1" 
+              max="10" 
+              step="1" 
+              value="1" 
+              aria-labelledby="slider-label"
+              aria-valuemin="1" 
+              aria-valuemax="10" 
+              aria-valuenow="1"
+            >
+            <div class="slider-ticks" aria-hidden="true">
+              <span>K=1 (Min)</span>
+              <span>K=2</span>
+              <span>K=3</span>
+              <span>K=4</span>
+              <span>K=5 (Mid)</span>
+              <span>K=6</span>
+              <span>K=7</span>
+              <span>K=8</span>
+              <span>K=9</span>
+              <span>K=10 (Max)</span>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+            <div style="display: flex; gap: 0.5rem;">
+              <button id="btn-step-prev" class="tab-btn" aria-label="Decrease reasoning effort">&minus; Less Effort</button>
+              <button id="btn-step-next" class="tab-btn" aria-label="Increase reasoning effort">+ More Effort</button>
+            </div>
+            <div id="maze-status-pill" class="status-pill status-unsolved" aria-live="polite">
+              <span>&#9888;</span> Incomplete Path
+            </div>
+          </div>
+        </div>
+
+        <!-- Side-by-Side Comparison Grid -->
+        <div class="maze-comparison-grid">
+          <!-- Predicted Model Output -->
+          <div class="maze-panel">
+            <div class="maze-panel-header">
+              <div class="maze-panel-title">
+                <span style="color: var(--accent-emerald);">&#9670;</span> Model Latent Prediction
+              </div>
+              <span class="badge-provenance badge-real">Step Output</span>
+            </div>
+            
+            <div id="pred-maze-board" class="maze-board-container" role="region" aria-label="Model predicted path grid">
+              <!-- Rendered via JS -->
+            </div>
+
+            <div class="live-metrics-bar">
+              <div class="metric-stat-box">
+                <div class="metric-stat-label">Path IoU</div>
+                <div class="metric-stat-val" id="metric-iou">0.0%</div>
+              </div>
+              <div class="metric-stat-box">
+                <div class="metric-stat-label">Complete Path</div>
+                <div class="metric-stat-val" id="metric-solve">NO</div>
+              </div>
+              <div class="metric-stat-box">
+                <div class="metric-stat-label">Effort Budget</div>
+                <div class="metric-stat-val" id="metric-compute">K = 1</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ground Truth Solution -->
+          <div class="maze-panel">
+            <div class="maze-panel-header">
+              <div class="maze-panel-title">
+                <span style="color: var(--accent-amber);">&#9670;</span> Ground Truth Shortest Path
+              </div>
+              <span class="badge-provenance badge-real">BFS Optimal</span>
+            </div>
+
+            <div id="gt-maze-board" class="maze-board-container" role="region" aria-label="Ground truth shortest path grid">
+              <!-- Rendered via JS -->
+            </div>
+
+            <div class="live-metrics-bar">
+              <div class="metric-stat-box">
+                <div class="metric-stat-label">Solver Type</div>
+                <div class="metric-stat-val" style="font-size: 0.95rem; color: var(--accent-amber);">BFS Shortest</div>
+              </div>
+              <div class="metric-stat-box">
+                <div class="metric-stat-label">Optimality</div>
+                <div class="metric-stat-val">100%</div>
+              </div>
+              <div class="metric-stat-box">
+                <div class="metric-stat-label">Status</div>
+                <div class="metric-stat-val" style="color: var(--accent-emerald);">TARGET</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="maze-legend" aria-label="Maze cell type legend">
+          <div class="legend-item"><div class="legend-swatch swatch-wall"></div> Wall (Barrier)</div>
+          <div class="legend-item"><div class="legend-swatch swatch-pred"></div> Model Predicted Path</div>
+          <div class="legend-item"><div class="legend-swatch swatch-gt"></div> Ground Truth Path</div>
+          <div class="legend-item"><div class="legend-swatch swatch-start"></div> Start (S)</div>
+          <div class="legend-item"><div class="legend-swatch swatch-goal"></div> Goal (G)</div>
+        </div>
+      </section>
+
+      <!-- Module 2: Aggregate Accuracy vs. Effort Curve (FR3) -->
+      <section class="section-block" id="aggregate-scaling" aria-labelledby="heading-scaling">
+        <div class="section-header">
+          <div class="section-title-wrap">
+            <h2 id="heading-scaling">
+              <span>02</span> Empirical Scaling Curve &amp; Diminishing Returns
+            </h2>
+            <p class="section-subtitle">
+              Measured across 100 held-out test mazes evaluated at each loop count K &isin; [1, 10]. Notice steep early gains and the plateau after K=5.
+            </p>
+          </div>
+          <span class="badge-provenance badge-real">&#9679; PRECOMPUTED 100-TEST EVAL</span>
+        </div>
+
+        <div class="chart-container-box">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">
+              <span style="color: #10b981;">&mdash; Exact Solve Rate (%)</span> &nbsp;&nbsp;&bull;&nbsp;&nbsp; 
+              <span style="color: #8b5cf6;">--- Path IoU (%)</span>
+            </div>
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">
+              N=100 Mazes | Seed=999 | ConvGRU Core
+            </div>
+          </div>
+
+          <!-- SVG Chart Container -->
+          <div id="scaling-chart-wrap">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Accessible Data Table for Screen Readers and Verification -->
+        <div style="margin-top: 2rem;">
+          <h3 style="font-size: 1.05rem; margin-bottom: 0.75rem; color: var(--text-primary);">
+            Exact Numerical Scaling Data
+          </h3>
+          <div style="overflow-x: auto;">
+            <table class="data-table" aria-label="Accuracy versus reasoning effort steps data table">
+              <thead>
+                <tr>
+                  <th scope="col">Reasoning Loops (K)</th>
+                  <th scope="col">Exact Solve Rate (%)</th>
+                  <th scope="col">Mean Path IoU (%)</th>
+                  <th scope="col">BCE Loss</th>
+                  <th scope="col">Measured Latency (ms / maze)</th>
+                </tr>
+              </thead>
+              <tbody id="table-scaling-body">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Module 3: BDH-CQ External Frontier Results (FR4) -->
+      <section class="section-block" id="bdh-cq-benchmark" aria-labelledby="heading-bdhcq">
+        <div class="section-header">
+          <div class="section-title-wrap">
+            <h2 id="heading-bdhcq">
+              <span>03</span> Frontier Evidence: BDH-CQ on ARC-AGI-1
+            </h2>
+            <p class="section-subtitle">
+              External reported benchmark results demonstrating latent reasoning effort scaling in a 150M parameter foundation model.
+            </p>
+          </div>
+          <span class="badge-provenance badge-external">&#9679; EXTERNAL REPORTED (Table 5)</span>
+        </div>
+
+        <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
+          In <em>&ldquo;BDH-CQ: In-Context Learning with Recurrent Latent Reasoning&rdquo;</em> (arXiv:2608.09888), Pathway evaluated the impact of reasoning effort (latent thinking effort) on the ARC-AGI-1 benchmark. The model was exposed to varying levels of latent reasoning during training and evaluated across LOW, MEDIUM, and HIGH effort:
+        </p>
+
+        <!-- BDH-CQ Cards Grid -->
+        <div class="bdh-cards-grid" id="bdh-cards-container">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="external-disclaimer-box" role="note">
+          <strong>Strict Academic Provenance Disclaimer:</strong>
+          The BDH-CQ numbers shown above (21.0% / 27.0% / 29.5% pass@2 with 22% / 11% / 0% cost reductions) are published developer-reported results from Pathway's research team on the ARC-AGI-1 benchmark (arXiv:2608.09888, Table 5). They are presented here as external comparative literature and are <strong>not</strong> independently reproduced by our local toy maze solver.
+        </div>
+      </section>
+
+      <!-- Module 4: Honest Provenance Matrix & Concepts (FR6 & FR5) -->
+      <section class="section-block" id="provenance-section" aria-labelledby="heading-provenance">
+        <div class="section-header">
+          <div class="section-title-wrap">
+            <h2 id="heading-provenance">
+              <span>04</span> Provenance, Mechanism &amp; Limitations
+            </h2>
+            <p class="section-subtitle">
+              Unambiguous accounting of live vs. precomputed vs. illustrative components, plus conceptual analysis.
+            </p>
+          </div>
+          <span class="badge-provenance badge-illustrative">&#9679; TRANSPARENCY MATRIX</span>
+        </div>
+
+        <!-- Provenance Matrix -->
+        <div style="overflow-x: auto; margin-bottom: 2rem;">
+          <table class="provenance-matrix-table">
+            <thead>
+              <tr>
+                <th scope="col">Artifact Component</th>
+                <th scope="col">Classification</th>
+                <th scope="col">Data Source &amp; Methodology</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Maze Explorer &amp; Traces</strong></td>
+                <td><span class="badge-provenance badge-real">PRECOMPUTED REAL</span></td>
+                <td>Generated via <code>ml/generate_mazes.py</code>; model predicted probabilities exported by <code>ml/evaluate.py</code> from checkpoint <code>model.pt</code>. Replayed statically without in-browser inference.</td>
+              </tr>
+              <tr>
+                <td><strong>Accuracy vs. Effort Curve</strong></td>
+                <td><span class="badge-provenance badge-real">PRECOMPUTED REAL</span></td>
+                <td>Empirically evaluated on 100 held-out test mazes (Seed 999) using the trained ConvGRU recurrent solver across steps K=1..10.</td>
+              </tr>
+              <tr>
+                <td><strong>BDH-CQ Table 5 Module</strong></td>
+                <td><span class="badge-provenance badge-external">EXTERNAL REPORTED</span></td>
+                <td>Reported by Pathway in arXiv:2608.09888 (Table 5). Sourced directly from published text; not reproduced locally.</td>
+              </tr>
+              <tr>
+                <td><strong>Conceptual Flow Diagrams</strong></td>
+                <td><span class="badge-provenance badge-illustrative">ILLUSTRATIVE</span></td>
+                <td>Diagrammatic illustrations of latent recurrence versus autoregressive token generation.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Conceptual Explanation: Latent Recurrence vs Token CoT -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+          <div style="background: rgba(15, 23, 42, 0.6); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-subtle);">
+            <h3 style="color: var(--accent-cyan); font-size: 1.1rem; margin-bottom: 0.5rem;">Autoregressive Chain-of-Thought</h3>
+            <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.5;">
+              Scales test-time compute by generating external natural-language tokens (e.g. &ldquo;First, let&rsquo;s inspect cell (1,2)...&rdquo;). This verbalization increases context length quadratic attention memory, incurs KV-cache storage overhead, and risks cascading token drift.
+            </p>
+          </div>
+
+          <div style="background: rgba(15, 23, 42, 0.6); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-subtle);">
+            <h3 style="color: var(--accent-emerald); font-size: 1.1rem; margin-bottom: 0.5rem;">Recurrent Latent Reasoning</h3>
+            <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.5;">
+              Scales test-time compute by repeatedly iterating a shared-weight core over continuous high-dimensional latent states $h_k = \text{Core}(h_{k-1}, x)$. It uses zero extra token bandwidth, maintains a constant memory footprint, and refines solutions purely through tensor depth.
+            </p>
+          </div>
+        </div>
+
+        <!-- Explicit Limitations -->
+        <div style="margin-top: 2rem; background: rgba(245, 158, 11, 0.05); border-left: 4px solid var(--accent-amber); padding: 1.25rem; border-radius: 0 8px 8px 0;">
+          <h4 style="color: var(--accent-amber); font-size: 0.95rem; margin-bottom: 0.4rem;">Explicit Model Limitations</h4>
+          <ul style="font-size: 0.875rem; color: #e2e8f0; line-height: 1.6; padding-left: 1.25rem;">
+            <li><strong>Task Dimensionality:</strong> 2D grid mazes are spatial pathfinding problems. While spatial connectivity models receptive field expansion, language reasoning requires abstract relational composition.</li>
+            <li><strong>Receptive Field Saturation:</strong> Beyond the maze diameter ($K \ge 5$), the physical receptive field covers the entire grid. Additional loops only refine edge confidence, resulting in the observed plateau.</li>
+            <li><strong>Static Client Substrate:</strong> All interactions replay precomputed traces to ensure zero latency, zero backend dependencies, and 100% judge reproducibility without API keys or GPUs.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Academic Citations & Reproducibility Guide -->
+      <section class="section-block" id="citations-section" aria-labelledby="heading-citations">
+        <div class="section-header">
+          <div class="section-title-wrap">
+            <h2 id="heading-citations">
+              <span>05</span> Academic Citations &amp; Reproducibility
+            </h2>
+            <p class="section-subtitle">
+              Exact scholarly references and deterministic instructions to reproduce the entire pipeline from scratch.
+            </p>
+          </div>
+        </div>
+
+        <ul class="citation-list">
+          <li>
+            <strong>Foundational Latent Architecture:</strong><br>
+            Kosowski et al. (2025). <em>&ldquo;The Dragon Hatchling: The Missing Link Between the Transformer and Models of the Brain&rdquo;</em>. 
+            arXiv preprint <a href="https://arxiv.org/abs/2509.26507" target="_blank" rel="noopener noreferrer">arXiv:2509.26507</a>.
+          </li>
+          <li>
+            <strong>Effort-Controlled Reasoning Benchmark:</strong><br>
+            Kosowski et al. (2026). <em>&ldquo;BDH-CQ: In-Context Learning with Recurrent Latent Reasoning&rdquo;</em>. 
+            arXiv preprint <a href="https://arxiv.org/abs/2608.09888" target="_blank" rel="noopener noreferrer">arXiv:2608.09888</a>. (Table 5, Figure 7).
+          </li>
+        </ul>
+
+        <div style="margin-top: 1.5rem; background: rgba(10, 15, 25, 0.9); padding: 1.25rem; border-radius: 8px; border: 1px solid var(--border-subtle);">
+          <h4 style="font-size: 0.9rem; color: var(--text-primary); margin-bottom: 0.5rem; font-family: var(--font-mono);">
+            Exact Reproduction Commands (.venv):
+          </h4>
+          <pre style="background: transparent; color: #a5f3fc; font-family: var(--font-mono); font-size: 0.8rem; overflow-x: auto; padding: 0.5rem 0;"><code># 1. Activate project virtual environment
+.venv\Scripts\activate
+
+# 2. Run full automated test suite
+pytest ml/tests site/tests
+
+# 3. Regenerate dataset, train model, and export evaluation JSON
+python ml/train.py
+python ml/evaluate.py
+
+# 4. Serve the static interactive site locally
+python -m http.server 8000 --directory site</code></pre>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <p>
+        Inference-Time Scaling Explainer &bull; Built for the Pathway x DataForge Hackathon &bull; 
+        <a href="https://github.com/TheShriHari/Pathway-Dataforge-TASK" style="color: var(--accent-cyan); text-decoration: none;">GitHub Repository</a>
+      </p>
+      <p style="margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-muted);">
+        Static client-side artifact. Zero backend dependencies. Fully accessible &amp; reproducible.
+      </p>
+    </footer>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

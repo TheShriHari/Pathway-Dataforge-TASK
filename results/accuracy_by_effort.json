@@ -1,0 +1,106 @@
+{
+  "metadata": {
+    "model_name": "RecurrentLatentMazeSolver (ConvGRU)",
+    "param_count": 69745,
+    "test_set_size": 100,
+    "grid_size": [
+      8,
+      8
+    ],
+    "random_seed": 999,
+    "provenance": "PRECOMPUTED_REAL",
+    "eval_summary": "Evaluated on held-out synthetic test mazes across reasoning steps K=1..10 with empirical latency benchmarking."
+  },
+  "scaling_curve": [
+    {
+      "step": 1,
+      "exact_solve_rate": 0.72,
+      "exact_solve_percent": 72.0,
+      "path_iou": 0.9153,
+      "mean_bce_loss": 0.0816,
+      "measured_latency_ms": 0.129,
+      "loop_count": 1
+    },
+    {
+      "step": 2,
+      "exact_solve_rate": 0.79,
+      "exact_solve_percent": 79.0,
+      "path_iou": 0.9616,
+      "mean_bce_loss": 0.0392,
+      "measured_latency_ms": 0.218,
+      "loop_count": 2
+    },
+    {
+      "step": 3,
+      "exact_solve_rate": 0.89,
+      "exact_solve_percent": 89.0,
+      "path_iou": 0.9814,
+      "mean_bce_loss": 0.0223,
+      "measured_latency_ms": 0.319,
+      "loop_count": 3
+    },
+    {
+      "step": 4,
+      "exact_solve_rate": 0.95,
+      "exact_solve_percent": 95.0,
+      "path_iou": 0.9887,
+      "mean_bce_loss": 0.016,
+      "measured_latency_ms": 0.409,
+      "loop_count": 4
+    },
+    {
+      "step": 5,
+      "exact_solve_rate": 0.97,
+      "exact_solve_percent": 97.0,
+      "path_iou": 0.9902,
+      "mean_bce_loss": 0.0162,
+      "measured_latency_ms": 0.549,
+      "loop_count": 5
+    },
+    {
+      "step": 6,
+      "exact_solve_rate": 0.97,
+      "exact_solve_percent": 97.0,
+      "path_iou": 0.9902,
+      "mean_bce_loss": 0.0175,
+      "measured_latency_ms": 0.63,
+      "loop_count": 6
+    },
+    {
+      "step": 7,
+      "exact_solve_rate": 0.97,
+      "exact_solve_percent": 97.0,
+      "path_iou": 0.9908,
+      "mean_bce_loss": 0.0173,
+      "measured_latency_ms": 0.724,
+      "loop_count": 7
+    },
+    {
+      "step": 8,
+      "exact_solve_rate": 0.96,
+      "exact_solve_percent": 96.0,
+      "path_iou": 0.9912,
+      "mean_bce_loss": 0.0161,
+      "measured_latency_ms": 0.828,
+      "loop_count": 8
+    },
+    {
+      "step": 9,
+      "exact_solve_rate": 0.97,
+      "exact_solve_percent": 97.0,
+      "path_iou": 0.9908,
+      "mean_bce_loss": 0.0147,
+      "measured_latency_ms": 0.95,
+      "loop_count": 9
+    },
+    {
+      "step": 10,
+      "exact_solve_rate": 0.96,
+      "exact_solve_percent": 96.0,
+      "path_iou": 0.9922,
+      "mean_bce_loss": 0.0128,
+      "measured_latency_ms": 1.172,
+      "loop_count": 10
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local tooling & agents directory
+.agents/
+
+# Downloaded arXiv reference papers
+2509.26507v1.*
+2608.09888v1.*
