@@ -2,35 +2,37 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Inference-Time Scaling in Latent Space - Summary</title>
+<title>One-Page Concept Summary - DataForge x Pathway</title>
 <style>
   @page {
     size: letter;
-    margin: 0.3in;
+    margin: 0.42in 0.45in;
+  }
+  * {
+    box-sizing: border-box;
   }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    font-size: 7.2pt;
-    line-height: 1.2;
-    column-count: 2;
-    column-gap: 15px;
-    color: #111827;
+    font-size: 8.8pt;
+    line-height: 1.28;
+    color: #0f172a;
     margin: 0;
     padding: 0;
   }
   h1 {
-    font-size: 13pt;
+    font-size: 13.5pt;
+    line-height: 1.15;
     margin: 0 0 3px 0;
-    color: #0f172a;
-    font-weight: 700;
+    color: #0369a1;
+    font-weight: 800;
   }
   h3 {
-    font-size: 9.5pt;
+    font-size: 9.6pt;
     margin: 6px 0 2px 0;
-    color: #1e293b;
-    border-bottom: 1px solid #cbd5e1;
+    color: #0c4a6e;
+    border-bottom: 1.5px solid #0284c7;
     padding-bottom: 1px;
-    font-weight: 600;
+    font-weight: 700;
     break-after: avoid;
   }
   p {
@@ -38,34 +40,39 @@
   }
   blockquote {
     margin: 3px 0;
-    padding: 3px 8px;
-    background: #f8fafc;
-    border-left: 3px solid #3b82f6;
+    padding: 4px 10px;
+    background: #f0f9ff;
+    border-left: 3px solid #0284c7;
     font-style: italic;
+    color: #0369a1;
+    font-size: 8.8pt;
+    line-height: 1.3;
   }
   table {
     width: 100%;
     border-collapse: collapse;
-    margin: 4px 0;
-    font-size: 7.2pt;
+    margin: 5px 0;
+    font-size: 8.2pt;
+    line-height: 1.25;
     break-inside: avoid;
     page-break-inside: avoid;
   }
   th, td {
     border: 1px solid #cbd5e1;
-    padding: 2px 5px;
+    padding: 3px 6px;
     text-align: left;
   }
   th {
-    background: #f1f5f9;
-    font-weight: 600;
+    background: #f8fafc;
+    font-weight: 700;
+    color: #0f172a;
   }
   ul, ol {
     margin: 0 0 4px 0;
-    padding-left: 16px;
+    padding-left: 18px;
   }
   li {
-    margin-bottom: 1px;
+    margin-bottom: 1.5px;
   }
   hr {
     border: none;
@@ -73,99 +80,99 @@
     margin: 4px 0;
   }
   code {
-    font-family: monospace;
-    font-size: 8pt;
+    font-family: "JetBrains Mono", Consolas, monospace;
+    font-size: 8.2pt;
     background: #f1f5f9;
-    padding: 1px 2px;
+    padding: 1px 3px;
+    border-radius: 2px;
+  }
+  a {
+    color: #0284c7;
+    text-decoration: none;
   }
 </style>
 </head>
 <body>
-<h1>Inference-Time Scaling in Latent Space: Recurrent Non-Verbal Reasoning</h1>
+<h1>Can Thinking Harder (Without Writing More) Make AI Smarter?</h1>
 
-<p><strong>Track Submission</strong>: DataForge x Pathway — <em>Explain the Frontier</em><br />
-<strong>Interactive Web Explainer</strong>: <a href="https://theshrihari.github.io/Dataforge-Submission/">https://theshrihari.github.io/Dataforge-Submission/</a> | <strong>Repository</strong>: <a href="https://github.com/TheShriHari/Dataforge-Submission">https://github.com/TheShriHari/Dataforge-Submission</a><br />
-<strong>Topic</strong>: Test-Time Compute Scaling &amp; Recurrent Latent Reasoning (BDH / BDH-CQ)</p>
+<p><strong>Track</strong>: DataForge x Pathway - <em>Explain the Frontier</em> | <strong>Live Explainer</strong>: <a href="https://theshrihari.github.io/Dataforge-Submission/">theshrihari.github.io/Dataforge-Submission/</a> | <strong>Code</strong>: <a href="https://github.com/TheShriHari/Dataforge-Submission">github.com/TheShriHari/Dataforge-Submission</a><br />
+<strong>Topic</strong>: Scaling test-time compute via recurrent latent reasoning without emitted tokens</p>
 
 <hr />
 
 <h3>1. Central Claim</h3>
 
 <blockquote>
-  <p><strong>"Increasing the number of recurrent latent computation steps at inference time can improve reasoning accuracy without producing any additional natural-language reasoning tokens — but gains diminish and each extra step costs more compute/time."</strong></p>
+  <p><strong>"Increasing recurrent latent computation steps at inference time improves reasoning accuracy without producing extra natural-language tokens - but gains diminish and each extra step costs time and compute."</strong></p>
 </blockquote>
 
 <hr />
 
-<h3>2. Design Motivation: Latent Iteration vs. Verbalized Chain-of-Thought</h3>
+<h3>2. Motivation: Latent Iteration vs. Chain-of-Thought (CoT)</h3>
 
-<p>Current LLM test-time scaling primarily relies on autoregressive Chain-of-Thought (CoT) prompting or search sampling (Snell et al., 2024, <a href="https://arxiv.org/abs/2408.03314">arXiv:2408.03314</a>). While effective, verbalized CoT suffers from severe architectural bottlenecks:</p>
+<p>Today's models scale answer-time thinking by writing intermediate text steps (Chain-of-Thought; Snell et al., 2024, <a href="https://arxiv.org/abs/2408.03314">arXiv:2408.03314</a>). However, verbalized CoT has core physical bottlenecks:</p>
 
 <ol>
-<li><strong>Context &amp; Memory Bloat</strong>: Every verbalized reasoning token appends to the context window, causing <i>O</i>(<i>N</i>²) self-attention cost and quadratic Key-Value (KV) cache expansion.</li>
-<li><strong>Syntactic Fragility &amp; Drift</strong>: Verbal reasoning demands strict grammatical adherence; an early hallucination or syntactic failure permanently derails subsequent steps.</li>
-<li><strong>Contrast with Standard Forward Passes</strong>: Standard Transformer or feedforward CNN passes apply a static layer sequence where compute is strictly bound to parameter depth <i>L</i>. In contrast, <strong>recurrent latent iteration</strong> loops hidden states through a weight-shared core for <i>K</i> discrete iterations:
-<b><i>h<sub>k</sub></i> = Core(<i>h</i><sub><i>k</i>-1</sub>, <i>x</i>)</b> &nbsp;for <i>k</i> ∈ [1, <i>K</i>]
-This decouples inference compute budget from parameter count, preserving a constant tensor memory footprint (<i>h</i> ∈ ℝ<sup><i>C</i> × <i>H</i> × <i>W</i></sup>) with zero emitted text tokens.</li>
+<li><strong>Memory &amp; Attention Bloat</strong>: Emitted tokens expand the context window, causing <i>O</i>(<i>N</i>²) self-attention cost and quadratic KV-cache growth.</li>
+<li><strong>Syntactic Drift</strong>: Conditioning on text means an early mistake permanently corrupts downstream steps.</li>
+<li><strong>Latent Recurrence</strong>: Instead of writing tokens, the model passes a continuous hidden tensor through a weight-shared core for <i>K</i> steps: <i>h<sub>k</sub></i> = Core(<i>h</i><sub><i>k</i>-1</sub>, <i>x</i>). Compute scales while memory remains constant (<i>O</i>(1)) with zero emitted text tokens.</li>
 </ol>
 
 <hr />
 
-<h3>3. Technical Mechanism &amp; Measured Trade-Offs</h3>
+<h3>3. Empirical Findings: 2D Maze Spatial Pathfinding</h3>
 
-<p>Our implementation evaluates this mechanism on 2D maze pathfinding, where long-range connectivity requires deep propagation. Using a 123,713-parameter shared Convolutional GRU (ConvGRU) core (<code>ml/model.py</code>), each recurrence step <i>k</i> expands the effective receptive field by 2 grid cells.</p>
-
-<p>Measured across N=100 held-out 15 × 15 synthetic mazes (Seed 999, <code>results/accuracy_by_effort.json</code>):</p>
+<p>We evaluated this mechanism using a 123,713-parameter shared ConvGRU core (<code>ml/model.py</code>) on 100 held-out 15 × 15 mazes (Seed 999). Each step expands the receptive field by 2 grid cells:</p>
 
 <ul>
-<li><strong>Steep Early Accuracy Phase (<i>K</i> = 1 → 10)</strong>: Exact solve rate climbs from <strong>1.0%</strong> (<i>K</i> = 1, 0.666 ms) to <strong>44.0%</strong> (<i>K</i> = 5, 2.911 ms) and <strong>81.0%</strong> at <i>K</i> = 10 (6.155 ms). Path IoU rises from <strong>55.94%</strong> to <strong>96.61%</strong>, reflecting rapid topological discovery.</li>
-<li><strong>Empirical Diminishing Returns (<i>K</i> = 10 → 20)</strong>: Increasing <i>K</i> from 10 to 20 yields only a <strong>+7.0%</strong> gain in solve rate (81.0% → 88.0%) and plateaued Path IoU (96.61% → 98.13%), while latency more than doubles from <strong>6.155 ms to 12.884 ms/maze</strong>.</li>
-<li><strong>Training Horizon &amp; Generalization</strong>: <i>K</i> = 16–20 extends beyond the <i>K</i> ~ Uniform(1, 15) training curriculum (<code>ml/train.py</code>). The model generalizes because the recurrent core is weight-shared and lacks step-count parameters, but this was not part of the training distribution.</li>
+<li><strong>Steep Early Phase (<i>K</i> = 1 → 10)</strong>: Solve rate rises from <strong>1.0%</strong> (0.67 ms) to <strong>44.0%</strong> at <i>K</i> = 5 (2.91 ms) and <strong>81.0%</strong> at <i>K</i> = 10 (6.16 ms). Mean Path IoU rises from 55.9% to 96.6%, resolving maze connectivity.</li>
+<li><strong>Diminishing Returns (<i>K</i> = 10 → 20)</strong>: <i>K</i> = 10 → 20 yields only a <strong>+7.0%</strong> solve gain (81% → 88%) while latency doubles (6.16 ms → 12.88 ms).</li>
+<li><strong>Extrapolation</strong>: <i>K</i> = 16–20 extends beyond the <i>K</i> ~ Uniform(1, 15) training curriculum (<code>ml/train.py</code>). The model generalizes because the core is weight-shared with no step-count parameters.</li>
 </ul>
 
 <hr />
 
-<h3>4. Multi-Dimensional Paradigm Comparison</h3>
+<h3>4. Paradigm Comparison</h3>
 
 <table>
 <thead>
 <tr>
   <th>Dimension</th>
-  <th>Toy Latent Maze Solver (Our Artifact)</th>
+  <th>Toy Latent Maze Solver</th>
   <th>BDH-CQ Foundation Model (Kosowski et al., 2026)</th>
-  <th>Autoregressive Search / CoT (Snell et al., 2024)</th>
+  <th>Autoregressive CoT (Snell et al., 2024)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
   <td><strong>Domain &amp; Scale</strong></td>
-  <td>2D Spatial Pathfinding (15 × 15), 123K params.</td>
-  <td>ARC-AGI-1 Abstract Reasoning, ~150M params.</td>
-  <td>Symbolic Math &amp; Language Benchmarks, &gt;7B params.</td>
+  <td>2D Mazes (15 × 15), 123K params</td>
+  <td>ARC-AGI-1 Reasoning, ~150M params</td>
+  <td>Symbolic Math &amp; Language, &gt;7B params</td>
 </tr>
 <tr>
   <td><strong>Effort vs. Accuracy</strong></td>
-  <td>Solves scale from <strong>1.0% (<i>K</i> = 1) to 88.0% (<i>K</i> = 20)</strong>; steep early gains, plateauing at <i>K</i> ≥ 11.</td>
-  <td>Pass@2 scales from <strong>21.0% (Low) to 29.5% (High)</strong> on ARC-AGI-1 (Table 5).</td>
-  <td>Accuracy scales with sample budget <i>N</i> and search beam depth.</td>
+  <td>Solves scale 1.0% (<i>K</i> = 1) → 88.0% (<i>K</i> = 20)</td>
+  <td>Pass@2 scales 21.0% (Low) → 29.5% (High)</td>
+  <td>Scales with sample count &amp; search beam</td>
 </tr>
 <tr>
-  <td><strong>Inference Hardware Cost</strong></td>
-  <td>Latency scales linearly from 0.666 ms (<i>K</i> = 1) to 12.884 ms (<i>K</i> = 20).</td>
-  <td>Low effort cuts hardware compute cost by <strong>22.0%</strong> (Medium cuts by <strong>11.0%</strong>) vs. High effort.</td>
-  <td>Exponentially growing KV-cache and sequence compute cost (<i>O</i>(<i>N</i>²)).</td>
+  <td><strong>Compute &amp; Latency</strong></td>
+  <td>Linear runtime: 0.67 ms → 12.88 ms</td>
+  <td>Low effort cuts hardware compute by 22%</td>
+  <td><i>O</i>(<i>N</i>²) sequence compute &amp; KV expansion</td>
 </tr>
 <tr>
-  <td><strong>Memory Footprint</strong></td>
-  <td>Constant <i>O</i>(1) tensor state (ℝ<sup>48 × 15 × 15</sup>).</td>
-  <td>Constant latent state manifold during recurrent updates.</td>
-  <td>Linear-to-quadratic memory expansion per generated token.</td>
+  <td><strong>State Footprint</strong></td>
+  <td>Constant <i>O</i>(1) tensor (ℝ<sup>48 × 15 × 15</sup>)</td>
+  <td>Constant latent manifold updates</td>
+  <td>Dynamic context growth per token</td>
 </tr>
 <tr>
   <td><strong>Observability</strong></td>
-  <td>Continuous probability readout via 1x1 projection head.</td>
-  <td>Continuous hidden activations (non-symbolic latent space).</td>
-  <td>High: Human-readable natural language reasoning transcripts.</td>
+  <td>Continuous probability grid readout</td>
+  <td>Hidden continuous activations</td>
+  <td>High: Human-readable natural text</td>
 </tr>
 </tbody>
 </table>
@@ -174,39 +181,28 @@ This decouples inference compute budget from parameter count, preserving a const
 
 <h3>5. Architectural Roles: BDH vs. BDH-CQ</h3>
 
-<p>To preserve technical precision, the two literature systems are distinguished:</p>
-
 <ul>
-<li><strong>The Dragon Hatchling (BDH)</strong> (Kosowski et al., 2025, <a href="https://arxiv.org/abs/2509.26507">arXiv:2509.26507</a>): A biologically-inspired, post-transformer foundational architecture that establishes recurrent latent state updates and non-autoregressive parallel processing across continuous representations.</li>
-<li><strong>BDH-CQ</strong> (Kosowski et al., 2026, <a href="https://arxiv.org/abs/2608.09888">arXiv:2608.09888</a>): A specialized system built within the BDH family incorporating in-context demonstration learning ("Context Queries") and test-time effort modulation across LOW, MEDIUM, and HIGH budgets without emitting scratchpad text tokens.</li>
+<li><strong>The Dragon Hatchling (BDH)</strong> <em>(Kosowski et al., 2025, <a href="https://arxiv.org/abs/2509.26507">arXiv:2509.26507</a>)</em>: Foundational post-transformer architecture with recurrent latent state updates and non-autoregressive parallel processing.</li>
+<li><strong>BDH-CQ</strong> <em>(Kosowski et al., 2026, <a href="https://arxiv.org/abs/2608.09888">arXiv:2608.09888</a>)</em>: Specializes BDH with in-context demonstration learning ("Context Queries") and LOW/MED/HIGH effort tiers without scratchpad tokens.</li>
 </ul>
 
 <hr />
 
-<h3>6. Evidence Classification: Strengths, Weaknesses, and Maturity</h3>
+<h3>6. Evidence Classification &amp; Maturity</h3>
 
 <ul>
-<li><strong>Advantage Over Incumbents</strong>: Recurrent latent iteration eliminates <i>O</i>(<i>N</i>²) KV-cache bloat and syntax drift, enabling variable-effort inference within a fixed memory envelope.</li>
-<li><strong>Where It Performs Worse / Remains Untested</strong>: Untested on open-ended natural language generation where sequential text tokens are the required output modality.</li>
-<li><strong>Our Experimental Results</strong>: Classified as <strong>own toy implementation, empirically measured, not independently audited</strong> on synthetic 2D mazes.</li>
-<li><strong>BDH-CQ External Baseline</strong>: ARC-AGI-1 score (29.5% pass@2) is <strong>developer-reported, partially independently audited by Bielik/NYU for the headline score only</strong>. The internal scaling ablation (Table 5: 21.0% / 27.0% / 29.5% across effort tiers) is developer-reported and not independently reproduced.</li>
+<li><strong>Advantage Over Incumbents</strong>: Eliminates KV-cache expansion and syntactic fragility; enables variable inference effort in constant memory.</li>
+<li><strong>Untested Frontiers</strong>: Untested on open-ended generation where language tokens are the necessary output.</li>
+<li><strong>Evidence Integrity</strong>: Maze numbers are our own empirical measurements (100 mazes, seed 999). BDH-CQ Table 5 results (21.0% → 29.5%) are developer-reported by Pathway and not independently reproduced.</li>
 </ul>
 
 <hr />
 
-<h3>7. Primary Limitation &amp; Open Question</h3>
-
-<p>While recurrent latent scaling avoids token-generation overhead, it introduces a key bottleneck: <strong>latent reasoning lacks explicit symbolic auditability</strong>. If a model fails at step <i>K</i> = 4, diagnosing whether failure stemmed from representation saturation, gradient vanishing, or feature drift requires probing classifiers rather than reading an English scratchpad. Developing standardized, zero-overhead probing techniques for continuous recurrent latent trajectories remains a crucial open research question.</p>
-
-<hr />
-
-<h3>8. Where to Continue Learning</h3>
+<h3>7. Primary Limitation &amp; Next Steps</h3>
 
 <ul>
-<li><strong>BDH Foundations</strong>: Kosowski et al. (2025), <em>"The Dragon Hatchling"</em>, <a href="https://arxiv.org/abs/2509.26507">arXiv:2509.26507</a> and code: <a href="https://github.com/pathwaycom/bdh">github.com/pathwaycom/bdh</a>.</li>
-<li><strong>BDH-CQ Technical Report</strong>: Kosowski et al. (2026), <a href="https://arxiv.org/abs/2608.09888">arXiv:2608.09888</a>.</li>
-<li><strong>Test-Time Compute Theory</strong>: Snell et al. (2024), <a href="https://arxiv.org/abs/2408.03314">arXiv:2408.03314</a>.</li>
-<li><strong>Interactive Explainer &amp; Verification</strong>: Live app, empirical plots, and step traces: <a href="https://theshrihari.github.io/Dataforge-Submission/">https://theshrihari.github.io/Dataforge-Submission/</a>.</li>
+<li><strong>Auditability Trade-off</strong>: Latent reasoning lacks an English scratchpad. Diagnosing failure at step <i>K</i> = 4 requires probing continuous vectors rather than reading text. Developing zero-overhead diagnostic probes remains an active open challenge.</li>
+<li><strong>Primary Sources</strong>: Kosowski et al. (2025, <a href="https://arxiv.org/abs/2509.26507">arXiv:2509.26507</a>); Kosowski et al. (2026, <a href="https://arxiv.org/abs/2608.09888">arXiv:2608.09888</a>); Snell et al. (2024, <a href="https://arxiv.org/abs/2408.03314">arXiv:2408.03314</a>).</li>
 </ul>
 
 </body>

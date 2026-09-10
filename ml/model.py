@@ -21,6 +21,8 @@ class ConvGRURecurrentCore(nn.Module):
     """
 
     def __init__(self, hidden_dim: int = 48):
+        # NOTE: class default is 48 for flexibility; training (ml/train.py) and
+        # evaluation (ml/evaluate.py) instantiate with hidden_dim=64 (saved in checkpoint).
         super().__init__()
         # Spatial gating on recurrent state (receptive field expansion)
         self.gate_h = nn.Conv2d(hidden_dim, hidden_dim * 2, kernel_size=3, padding=1)
@@ -52,6 +54,9 @@ class RecurrentLatentMazeSolver(nn.Module):
     """
 
     def __init__(self, in_channels: int = 3, hidden_dim: int = 48):
+        # NOTE: class default is 48; actual trained checkpoint uses hidden_dim=64.
+        # evaluate.py reads hidden_dim from the checkpoint dict, so this default
+        # is not used at inference time unless no checkpoint key is found.
         super().__init__()
         self.hidden_dim = hidden_dim
 

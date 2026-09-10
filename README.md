@@ -7,7 +7,7 @@
 
 ## 1. Central Claim
 
-> **"Increasing the number of recurrent latent computation steps at inference time can improve reasoning accuracy without producing any additional natural-language reasoning tokens — but gains diminish and each extra step costs more compute/time."**
+> **"Increasing the number of recurrent latent computation steps at inference time can improve reasoning accuracy without producing any additional natural-language reasoning tokens - but gains diminish and each extra step costs more compute/time."**
 
 This is a falsifiable, empirical claim:
 - **Testable positive aspect:** Model pathfinding accuracy and Path IoU increase monotonically as inference loop iterations $K$ increase from $K=1$ upward.
@@ -58,7 +58,7 @@ The application consists of a decoupled machine learning pipeline and a zero-fra
 ├── ml/
 │   ├── generate_mazes.py     # Deterministic maze generator (Depth-First Search) & BFS shortest-path solver
 │   ├── model.py              # RecurrentLatentMazeSolver (ConvGRU shared-weight core, 123,713 parameters)
-│   ├── train.py              # Curriculum training over randomized loop counts K ~ Uniform(1, 10)
+│   ├── train.py              # Curriculum training over randomized loop counts K ~ Uniform(1, 15)
 │   ├── evaluate.py           # Benchmark evaluator across K=1..20 on 100 held-out test mazes
 │   └── test/                 # Pytest test suite for ML components
 ├── site/
@@ -76,7 +76,7 @@ The application consists of a decoupled machine learning pipeline and a zero-fra
 ```
 
 ### Major UI Components & Roles:
-- **Module 1: Interactive Reasoning Effort Slider & Maze Explorer**: Allows the learner to adjust reasoning effort $K \in [1, 20]$ or click "+ / − Effort". The "Auto" button steps $K$ upward automatically and halts as soon as the model reaches a fully connected path (typically $K=4–5$), letting the learner see the actual moment additional effort stops being necessary — visually reinforcing the plateau shown in the aggregate chart.
+- **Module 1: Interactive Reasoning Effort Slider & Maze Explorer**: Allows the learner to adjust reasoning effort $K \in [1, 20]$ or click "+ / − Effort". The "Auto" button steps $K$ upward automatically and halts as soon as the model reaches a fully connected path (typically $K=4–5$), letting the learner see the actual moment additional effort stops being necessary - visually reinforcing the plateau shown in the aggregate chart.
 - **Module 2: Empirical Scaling Curve & Diminishing Returns Chart**: Dual-view SVG chart offering an aggregate 100-maze scaling curve (Exact Solve Rate % and Path IoU %) and an individual puzzle trace view with step-by-step progress tracking.
 - **Module 3: Frontier Literature Integration (BDH-CQ ARC-AGI-1)**: Comparative benchmark cards displaying Table 5 results from arXiv:2608.09888.
 - **Module 4: Technical Comparison & Concepts**: Side-by-side architectural comparison between autoregressive CoT and recurrent latent recurrence.
@@ -185,18 +185,18 @@ Once started, open **`http://localhost:8888`** in any modern web browser.
 
 ## 10. Credits & Licenses
 
-- **Codebase License**: MIT License (see [LICENSE](file:///c:/Users/toshr/OneDrive/Documents/ChatGPT/DataForge/LICENSE)).
+- **Codebase License**: MIT License (see [LICENSE](./LICENSE)).
 - **Web Typography**: Inter, Space Grotesk, and IBM Plex Mono sourced via Google Fonts under the [SIL Open Font License 1.1](https://openfontlicense.org/).
 - **Zero Third-Party JS/CSS Frameworks**: The web client uses 100% pure vanilla ES6+ and vanilla CSS.
-- **Detailed Asset & Attribution Register**: See [docs/CREDITS.md](file:///c:/Users/toshr/OneDrive/Documents/ChatGPT/DataForge/docs/CREDITS.md) for full library, algorithm, and research citation details.
+- **Detailed Asset & Attribution Register**: See [docs/CREDITS.md](./docs/CREDITS.md) for full library, algorithm, and research citation details.
 
 ---
 
 ## 11. AI Assistance Disclosure
 
-In compliance with the DataForge and NeurIPS Education Track guidelines, AI assistance is disclosed across four distinct categories:
+In compliance with the DataForge and NeurIPS Education Track guidelines, AI assistance is disclosed across distinct categories (see full standalone statement in [AI_DISCLOSURE.md](./AI_DISCLOSURE.md)):
 
-1. **Code Assistance**: Antigravity (Google DeepMind agentic pair programmer) was used to scaffold boilerplates, generate unit tests, format SVG markup, and assist in refactoring CSS styles. All mathematical models, training loops, evaluation logic, and contract assertions were written with test-driven validation.
-2. **Data Generation**: All synthetic maze training and testing datasets were generated deterministically using local Python scripts (`ml/generate_mazes.py`) using fixed pseudo-random seeds. No external or proprietary datasets were used.
-3. **Assets & Graphics**: All maze diagrams and scaling plots are rendered procedurally as vector SVGs by `site/app.js`. No AI-generated or third-party raster imagery was used.
-4. **Licenses & Attribution**: All external research citations (arXiv:2509.26507, arXiv:2608.09888, arXiv:2408.03314) and font licenses were verified manually against published sources.
+1. **Code Assistance**: Antigravity (Google DeepMind agentic pair programmer, powered by Gemini) assisted in scaffolding boilerplate, drafting unit test templates, generating the initial mathematical model architecture (`ml/model.py`), training loop logic (`ml/train.py`), evaluation script (`ml/evaluate.py`), and maze generation algorithms (`ml/generate_mazes.py`). All code was subsequently inspected, debugged, executed, and validated via unit and contract test suites by the authors before submission.
+2. **Data Generation**: All synthetic maze training and testing datasets were generated deterministically using local Python scripts (`ml/generate_mazes.py`) with fixed pseudo-random seeds. No external or proprietary datasets were used.
+3. **Assets & Graphics**: All maze diagrams and scaling plots are rendered procedurally as vector SVGs by `site/app.js`. No AI-generated raster imagery was used.
+4. **Licenses & Attribution**: All external research citations (arXiv:2509.26507, arXiv:2608.09888, arXiv:2408.03314) and font licenses were verified manually against primary published sources.

@@ -1,0 +1,16 @@
+# Submission Links - DataForge x Pathway Hackathon
+
+## 1. Public Artifact URL (Interactive Explainer)
+https://theshrihari.github.io/Dataforge-Submission/
+
+Opens without sign-in. Contains:
+- Interactive reasoning effort slider (K = 1–20)
+- Live maze pathfinding visualization
+- Empirical scaling curve (100-maze benchmark)
+- BDH-CQ frontier literature comparison (ARC-AGI-1 Table 5)
+
+## 2. Public Source Code Repository
+https://github.com/TheShriHari/Dataforge-Submission
+
+Contains all source code, training scripts, evaluation harnesses,
+web interface, test suites, precomputed results, and documentation.
