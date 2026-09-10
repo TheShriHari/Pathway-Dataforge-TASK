@@ -12,3 +12,10 @@ htmlcov/
 # Downloaded arXiv reference papers
 2509.26507v1.*
 2608.09888v1.*
+
+docs/generate_pdf.py
+docs/*.html
+submission*.zip
+CHECKLIST.md
+*.png
+scripts/
